@@ -21,7 +21,7 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
   const LIVE_KEY = "pk_live_21ad8f84a4b6a5d34c6d57dd516aafcc95f90e8c"; 
 
   useEffect(() => {
-    // --- 1. THE INTERCEPTOR (Force Iframe Permissions) ---
+    // --- THE INTERCEPTOR (Force Iframe Permissions) ---
     // This watches the DOM for the creation of the Paystack iframe 
     // and immediately adds the 'allow="clipboard-write"' attribute.
     const observer = new MutationObserver((mutations) => {
@@ -45,70 +45,8 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
     // Start observing the body for added nodes (subtree: true catches nested elements)
     observer.observe(document.body, { childList: true, subtree: true });
 
-
-    // --- 2. THE INVISIBLE LISTENER (Fallback Copy Logic) ---
-    // This listens for clicks bubbling up from the iframe area to the main window.
-    const copyToClipboard = (text: string, label: string = "") => {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(text).then(() => {
-                const msg = label ? `${label} (${text}) copied!` : `${text} copied!`;
-                alert(msg);
-            }).catch((_err) => {
-                fallbackCopy(text);
-            });
-        } else {
-            fallbackCopy(text);
-        }
-    };
-
-    const fallbackCopy = (text: string) => {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            alert('Copied!');
-        } catch (err) {
-            console.error('Fallback: Oops, unable to copy', err);
-        }
-        document.body.removeChild(textArea);
-    };
-
-    const handleGlobalClick = (e: any) => {
-      const target = e.target as HTMLElement;
-      if (!target) return;
-
-      const clickedText = target.innerText || (target as HTMLInputElement).value || target.textContent || "";
-      const cleanText = clickedText.replace(/[,\s]/g, '');
-
-      // Check for 10-digit Account Number
-      if (/^\d{10}$/.test(cleanText)) {
-          copyToClipboard(cleanText, "Account Number");
-      } 
-      // Check for exact Amount
-      else if (cleanText === '12000') {
-          copyToClipboard('12000', "Amount");
-      }
-      // Check for 'Copy' button clicks (Fallback)
-      else if (target.textContent?.includes('Copy') || target.closest('.copy-icon-class')) {
-         const accountNumberEl = document.querySelector('.account-number-selector') as HTMLElement;
-         const accountNumber = accountNumberEl?.innerText;
-         if(accountNumber) {
-             copyToClipboard(accountNumber.replace(/\s/g, ''), "Account Number");
-         }
-      }
-    };
-
-    // Use capture phase to intercept events as early as possible
-    document.addEventListener('click', handleGlobalClick, true);
-
     return () => {
       observer.disconnect();
-      document.removeEventListener('click', handleGlobalClick, true);
     };
   }, []);
 
@@ -138,7 +76,7 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
           onSuccess();
         },
         onClose: function() {
-          // Optional: Handle modal close
+          // Optional: Handle modal close without payment
         }
       });
       handler.openIframe();
