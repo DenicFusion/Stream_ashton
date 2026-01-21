@@ -18,7 +18,7 @@ declare global {
 export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, onBack }) => {
   const AMOUNT_NAIRA = 12000;
   const AMOUNT_KOBO = AMOUNT_NAIRA * 100;
-  const LIVE_KEY = "pk_live_21ad8f84a4b6a5d34c6d57dd516aafcc95f90e8c"; 
+  const LIVE_KEY = "pk_test_e066aa50d27780f1dae240674e366fee70a5db13"; 
 
   // NOTE: The DOM interception logic for the clipboard permission 
   // has been moved to index.html to ensure it runs globally and persistently.
