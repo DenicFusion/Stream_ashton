@@ -72,9 +72,16 @@ const App: React.FC = () => {
     }, 1500); // Reduced to 1.5s as requested
   };
 
-  const handleSignupSubmit = (data: UserData) => {
+  const handleAuthSubmit = (data: UserData) => {
     setUserData(data);
-    // Configurable Flow: Dashboard First or Payment First?
+    
+    // Check if user is already activated (e.g. from Login)
+    if (data.isActivated) {
+        transitionTo('DASHBOARD');
+        return;
+    }
+
+    // Configurable Flow for New/Unactivated Users
     if (SHOW_DASHBOARD_BEFORE_PAYMENT) {
        transitionTo('DASHBOARD');
     } else {
@@ -84,6 +91,16 @@ const App: React.FC = () => {
 
   const handlePaymentSuccess = (reference: string) => {
     setPaymentRef(reference);
+    
+    // Update User Activation Status locally and in Storage
+    if (userData) {
+        const updatedUser = { ...userData, isActivated: true };
+        setUserData(updatedUser);
+        
+        // Persist to Local Storage
+        localStorage.setItem('stream_user', JSON.stringify(updatedUser));
+    }
+
     transitionTo('SUCCESS');
   };
 
@@ -122,14 +139,14 @@ const App: React.FC = () => {
       case 'SIGNUP':
         return (
           <SignupForm 
-            onSubmit={handleSignupSubmit} 
+            onSubmit={handleAuthSubmit} 
             onBack={() => window.history.back()} 
             initialData={userData}
           />
         );
       case 'DASHBOARD':
         // Demo Mode Dashboard (Locked)
-        if (!userData) return <SignupForm onSubmit={handleSignupSubmit} onBack={() => window.history.back()} />;
+        if (!userData) return <SignupForm onSubmit={handleAuthSubmit} onBack={() => window.history.back()} />;
         return (
            <Dashboard 
               userData={userData} 
@@ -137,7 +154,7 @@ const App: React.FC = () => {
            />
         );
       case 'PAYMENT':
-        if (!userData) return <SignupForm onSubmit={handleSignupSubmit} onBack={() => window.history.back()} />;
+        if (!userData) return <SignupForm onSubmit={handleAuthSubmit} onBack={() => window.history.back()} />;
         return (
           <PaymentPage 
             userData={userData} 
