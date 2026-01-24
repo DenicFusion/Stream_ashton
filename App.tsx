@@ -18,7 +18,7 @@ import { SHOW_DASHBOARD_BEFORE_PAYMENT } from './config';
 // CONFIGURATION FOR REDIRECT
 const REDIRECT_CONFIG = {
   useWhatsApp: true, 
-  whatsAppNumber: "2349012345678", 
+  whatsAppNumber: "2349045942678", 
   telegramUrl: "https://t.me/streamafrica_official"
 };
 
@@ -208,7 +208,7 @@ const App: React.FC = () => {
                     fullWidth 
                     className="relative text-lg py-4 !shadow-[0_0_20px_rgba(14,165,233,0.4)] !border-none"
                 >
-                  {REDIRECT_CONFIG.useWhatsApp ? 'Submit Receipt on WhatsApp' : 'Finalize on Telegram'}
+                  {REDIRECT_CONFIG.useWhatsApp ? 'Finalize on WhatsApp' : 'Finalize on Telegram'}
                 </Button>
               </div>
             </div>
