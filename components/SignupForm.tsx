@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from './Button';
 import { UserData } from '../types';
+import { CustomAlert } from './CustomAlert';
 
 interface SignupFormProps {
   onSubmit: (data: UserData) => void;
@@ -11,6 +12,14 @@ interface SignupFormProps {
 export const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, onBack, initialData }) => {
   const [isLoginMode, setIsLoginMode] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
+  // Alert State
+  const [alertState, setAlertState] = useState<{
+    show: boolean;
+    title: string;
+    message: string;
+    type: 'success' | 'error' | 'info';
+  }>({ show: false, title: '', message: '', type: 'info' });
 
   const [formData, setFormData] = useState<UserData>(initialData || {
     name: '',
@@ -19,6 +28,14 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, onBack, initia
     phone: '',
     password: ''
   });
+
+  const showAlert = (title: string, message: string, type: 'success' | 'error' | 'info' = 'info') => {
+    setAlertState({ show: true, title, message, type });
+  };
+
+  const closeAlert = () => {
+    setAlertState(prev => ({ ...prev, show: false }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,7 +46,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, onBack, initia
     const storedUserStr = localStorage.getItem('stream_user');
     
     if (!storedUserStr) {
-      alert("Credentials not found. Please sign up first.");
+      showAlert("Account Not Found", "Credentials not found. Please sign up first to create an account.", 'error');
       return;
     }
 
@@ -41,11 +58,11 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, onBack, initia
       ) {
         onSubmit(storedUser);
       } else {
-        alert("Invalid username or password.");
+        showAlert("Login Failed", "Invalid username or password. Please try again.", 'error');
       }
     } catch (err) {
       console.error(err);
-      alert("Error reading user data. Please register again.");
+      showAlert("System Error", "Error reading user data. Please register again.", 'error');
     }
   };
 
@@ -56,18 +73,28 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, onBack, initia
         localStorage.setItem('stream_user', JSON.stringify(newUser));
         onSubmit(newUser);
     } else {
-        alert("Please fill in all fields to continue.");
+        showAlert("Incomplete Form", "Please fill in all fields to continue.", 'error');
     }
   };
 
   const handleForgotPassword = () => {
-    // Mock functionality as requested
-    alert("Redirecting to account creation...");
-    setIsLoginMode(false);
+    // Replaces the native alert from the user's request
+    showAlert("Notice", "Redirecting to account creation...", 'info');
+    setTimeout(() => {
+        setIsLoginMode(false);
+    }, 1500); // Small delay to let user read message
   };
 
   return (
     <div className="min-h-screen bg-stream-dark flex items-center justify-center p-4 relative overflow-y-auto">
+      <CustomAlert 
+        isOpen={alertState.show}
+        title={alertState.title}
+        message={alertState.message}
+        type={alertState.type}
+        onClose={closeAlert}
+      />
+
       {/* Background Effect */}
       <div className="fixed inset-0 z-0 pointer-events-none">
           <div className="absolute inset-0 bg-[#0f172a]"></div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 import { UserData } from '../types';
 import { PAYMENT_MODE, OPAY_PUBLIC_KEY, OPAY_MERCHANT_ID, OPAY_API_URL, BANK_DETAILS } from '../config';
+import { CustomAlert } from './CustomAlert';
 
 interface PaymentPageProps {
   userData: UserData;
@@ -20,15 +21,19 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
   const AMOUNT_KOBO = AMOUNT_NAIRA * 100;
   const LIVE_KEY = "pk_live_21ad8f84a4b6a5d34c6d57dd516aafcc95f90e8c"; 
   
-  // Determine initial tab based on PAYMENT_MODE
   const [activeTab, setActiveTab] = useState<'CARD' | 'TRANSFER' | 'OPAY'>(
     PAYMENT_MODE === 'TRUE' ? 'CARD' : 'TRANSFER'
   );
   
   const [copied, setCopied] = useState<string | null>(null);
   const [loadingOpay, setLoadingOpay] = useState(false);
+  const [alertState, setAlertState] = useState<{show: boolean, title: string, message: string, type: 'info'|'error'|'success'}>({show: false, title:'', message:'', type:'info'});
 
   const reference = "STREAM-" + Math.floor((Math.random() * 1000000000) + 1);
+
+  const showAlert = (title: string, message: string, type: 'info'|'error'|'success' = 'info') => {
+      setAlertState({ show: true, title, message, type });
+  };
 
   const handlePaystack = () => {
     if (window.PaystackPop) {
@@ -50,7 +55,7 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
       });
       handler.openIframe();
     } else {
-      alert("Paystack SDK not loaded. Please refresh.");
+      showAlert("System Error", "Paystack SDK not loaded. Please refresh the page.", "error");
     }
   };
 
@@ -70,8 +75,8 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
             total: AMOUNT_KOBO.toString(),
             currency: "NGN"
           },
-          returnUrl: window.location.origin, // Returns to the app after payment
-          callbackUrl: "https://your-site.com/api/opay-webhook", // Webhook for server-side confirmation
+          returnUrl: window.location.origin, 
+          callbackUrl: "https://your-site.com/api/opay-webhook",
           userInfo: {
             userEmail: userData.email,
             userName: userData.name,
@@ -81,10 +86,8 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
             name: "Stream Africa Activation",
             description: "Lifetime Access Activation Fee"
           },
-          payMethod: "BankCard" // Optional: Prefill or restrict method
+          payMethod: "BankCard"
         };
-
-        console.log("Initializing OPay transaction...");
 
         const response = await fetch(OPAY_API_URL, {
           method: "POST",
@@ -97,20 +100,14 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
         });
 
         const data = await response.json();
-        console.log("OPay Response:", data);
         
         if (data.code === "00000" && data.data && data.data.cashierUrl) {
-           // Redirect user to OPay Cashier
            window.location.href = data.data.cashierUrl;
         } else {
-           // Handle API errors
-           console.error("OPay Error Code:", data.code, data.message);
-           alert(`OPay Initialization Failed: ${data.message || 'Unknown error'}`);
+           showAlert("Payment Error", `OPay Initialization Failed: ${data.message || 'Unknown error'}`, 'error');
         }
       } catch (error) {
-        console.error("OPay Request Failed:", error);
-        // Fallback or CORS explanation
-        alert("Failed to connect to OPay. This might be a Network or CORS issue. \n\nIf testing locally, ensure the OPay Sandbox API allows direct browser calls, or use a backend proxy.");
+        showAlert("Connection Error", "Failed to connect to OPay. This might be a Network or CORS issue.", 'error');
       } finally {
         setLoadingOpay(false);
       }
@@ -120,13 +117,20 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ userData, onSuccess, o
       onSuccess(reference);
   };
 
-  // Determine allowed methods based on config
   const showPaystack = PAYMENT_MODE === 'TRUE';
   const showTransfer = PAYMENT_MODE === 'FALSE' || PAYMENT_MODE === 'NEUTRAL';
   const showOpay = PAYMENT_MODE === 'NEUTRAL';
 
   return (
     <div className="min-h-screen bg-stream-dark flex flex-col items-center justify-center p-4">
+      <CustomAlert 
+        isOpen={alertState.show}
+        title={alertState.title}
+        message={alertState.message}
+        type={alertState.type}
+        onClose={() => setAlertState(prev => ({...prev, show: false}))}
+      />
+      
       <div className="max-w-lg w-full bg-white text-gray-800 rounded-2xl shadow-2xl overflow-hidden">
         <div className="bg-emerald-600 p-6 text-center">
             <h2 className="text-2xl font-bold text-white">Complete Activation</h2>
