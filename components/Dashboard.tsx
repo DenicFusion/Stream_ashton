@@ -64,11 +64,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
           <p className="text-gray-400 text-sm mb-1">Total Balance</p>
           <div className="flex items-baseline gap-1 mb-6">
             <span className="text-3xl font-bold text-white">₦</span>
-            <span className="text-4xl font-extrabold text-white tracking-tight">0.00</span>
+            <span className="text-4xl font-extrabold text-white tracking-tight">12,000.00</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <button onClick={handleProtectedAction} className={`${isBlue ? 'bg-sky-500 shadow-sky-900/20' : 'bg-stream-green shadow-emerald-900/20'} text-white py-3 rounded-xl font-semibold text-sm shadow-lg active:scale-95 transition-transform`}>
-              Top Up
+              Top up
             </button>
             <button onClick={handleProtectedAction} className="bg-white/10 text-white py-3 rounded-xl font-semibold text-sm border border-white/10 hover:bg-white/20 active:scale-95 transition-transform">
               Withdraw
