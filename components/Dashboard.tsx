@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserData } from '../types';
 import { Button } from './Button';
 import { NotificationToast } from './NotificationToast';
@@ -12,8 +12,20 @@ interface DashboardProps {
 export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) => {
   const [activeTab, setActiveTab] = useState<'HOME' | 'EARN' | 'BAZAAR' | 'ACADEMY' | 'PROFILE'>('HOME');
   const [showActivateModal, setShowActivateModal] = useState(false);
+  const [isForced, setIsForced] = useState(false);
   const isActivated = userData.isActivated || false;
   const isBlue = THEME_COLOR === 'BLUE';
+
+  // Auto-trigger Activation Modal after 5 seconds if not activated
+  useEffect(() => {
+    if (!isActivated) {
+      const timer = setTimeout(() => {
+        setShowActivateModal(true);
+        setIsForced(true); // Lock the modal so it cannot be closed
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isActivated]);
 
   const handleProtectedAction = () => {
     if (!isActivated) {
@@ -38,7 +50,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
       {/* Header */}
       <header className="px-6 pt-12 pb-6 flex justify-between items-center bg-[#050A18]/95 backdrop-blur-sm sticky top-0 z-40 border-b border-white/5">
         <div>
-          <h1 className="text-white text-lg font-bold">Hello, {userData.name.split(' ')[0]} 👋</h1>
+          <h1 className="text-white text-lg font-bold">Hello, {userData.name.split(' ')[0]} ðŸ‘‹</h1>
           <p className="text-gray-400 text-xs flex items-center gap-1">
              Status: 
              {isActivated ? (
@@ -63,12 +75,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
           <div className={`absolute top-0 right-0 w-32 h-32 ${isBlue ? 'bg-sky-500/10' : 'bg-stream-green/10'} rounded-full blur-3xl -mr-10 -mt-10`}></div>
           <p className="text-gray-400 text-sm mb-1">Total Balance</p>
           <div className="flex items-baseline gap-1 mb-6">
-            <span className="text-3xl font-bold text-white">₦</span>
-            <span className="text-4xl font-extrabold text-white tracking-tight">12,000.00</span>
+            <span className="text-3xl font-bold text-white">â‚¦</span>
+            <span className="text-4xl font-extrabold text-white tracking-tight">0.00</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <button onClick={handleProtectedAction} className={`${isBlue ? 'bg-sky-500 shadow-sky-900/20' : 'bg-stream-green shadow-emerald-900/20'} text-white py-3 rounded-xl font-semibold text-sm shadow-lg active:scale-95 transition-transform`}>
-              Top up
+              Top Up
             </button>
             <button onClick={handleProtectedAction} className="bg-white/10 text-white py-3 rounded-xl font-semibold text-sm border border-white/10 hover:bg-white/20 active:scale-95 transition-transform">
               Withdraw
@@ -138,7 +150,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
             <div className="flex justify-between items-center">
                 <div>
                    <h3 className={`${isBlue ? 'text-sky-400' : 'text-emerald-400'} font-bold text-sm`}>Invite Friends</h3>
-                   <p className="text-gray-400 text-xs">Earn ₦5,000 per invite</p>
+                   <p className="text-gray-400 text-xs">Earn â‚¦5,000 per invite</p>
                 </div>
                 <div className={`${isBlue ? 'bg-sky-500/20' : 'bg-emerald-500/20'} p-2 rounded-lg`}>
                     <svg className={`w-5 h-5 ${isBlue ? 'text-sky-400' : 'text-emerald-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
@@ -150,9 +162,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
       {/* Activation Modal */}
       {showActivateModal && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center px-4">
-           <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowActivateModal(false)}></div>
+           {/* Backdrop: Lighter (60%) to show content behind, only clickable if NOT forced */}
+           <div 
+             className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-all duration-500" 
+             onClick={() => !isForced && setShowActivateModal(false)}
+           ></div>
+           
            <div className={`bg-stream-card w-full max-w-sm rounded-2xl p-6 border ${isBlue ? 'border-sky-500/30' : 'border-emerald-500/30'} shadow-2xl relative animate-in fade-in zoom-in duration-300`}>
-              <button onClick={() => setShowActivateModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
+              {/* Close Button: Hidden if forced */}
+              {!isForced && (
+                <button onClick={() => setShowActivateModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white">âœ•</button>
+              )}
+              
               <div className={`w-16 h-16 ${isBlue ? 'bg-sky-500/10 border-sky-500/20' : 'bg-emerald-500/10 border-emerald-500/20'} rounded-full flex items-center justify-center mx-auto mb-4 border`}>
                  <svg className={`w-8 h-8 ${isBlue ? 'text-sky-500' : 'text-emerald-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
               </div>
@@ -161,7 +182,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
                 You are currently in Demo Mode. To unlock earning features, withdraw funds, and access the Bazaar, please complete your one-time activation.
               </p>
               <Button onClick={onActivate} fullWidth className={`py-3 shadow-lg ${isBlue ? 'shadow-sky-500/20' : 'shadow-emerald-500/20'}`}>
-                Activate Now - ₦12,000
+                Activate Now - â‚¦12,000
               </Button>
            </div>
         </div>
