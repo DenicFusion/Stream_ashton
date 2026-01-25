@@ -50,7 +50,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
       {/* Header */}
       <header className="px-6 pt-12 pb-6 flex justify-between items-center bg-[#050A18]/95 backdrop-blur-sm sticky top-0 z-40 border-b border-white/5">
         <div>
-          <h1 className="text-white text-lg font-bold">Hello, {userData.name.split(' ')[0]} ðŸ‘‹</h1>
+          <h1 className="text-white text-lg font-bold">Hello, {userData.name.split(' ')[0]} 👋‹</h1>
           <p className="text-gray-400 text-xs flex items-center gap-1">
              Status: 
              {isActivated ? (
@@ -182,7 +182,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
                 You are currently in Demo Mode. To unlock earning features, withdraw funds, and access the Bazaar, please complete your one-time activation.
               </p>
               <Button onClick={onActivate} fullWidth className={`py-3 shadow-lg ${isBlue ? 'shadow-sky-500/20' : 'shadow-emerald-500/20'}`}>
-                Activate Now - â‚¦12,000
+                Activate Now - ₦12,000
               </Button>
            </div>
         </div>
