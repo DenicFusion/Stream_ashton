@@ -50,7 +50,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
       {/* Header */}
       <header className="px-6 pt-12 pb-6 flex justify-between items-center bg-[#050A18]/95 backdrop-blur-sm sticky top-0 z-40 border-b border-white/5">
         <div>
-          <h1 className="text-white text-lg font-bold">Hello, {userData.name.split(' ')[0]} 👋‹</h1>
+          <h1 className="text-white text-lg font-bold">Hello, {userData.name.split(' ')[0]} 👋</h1>
           <p className="text-gray-400 text-xs flex items-center gap-1">
              Status: 
              {isActivated ? (
