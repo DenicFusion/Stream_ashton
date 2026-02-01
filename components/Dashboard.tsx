@@ -79,14 +79,36 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
             <span className="text-4xl font-extrabold text-white tracking-tight">12,000.00</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <button onClick={handleProtectedAction} className={`${isBlue ? 'bg-sky-500 shadow-sky-900/20' : 'bg-stream-green shadow-emerald-900/20'} text-white py-3 rounded-xl font-semibold text-sm shadow-lg active:scale-95 transition-transform`}>
-              Top Up
-            </button>
-            <button onClick={handleProtectedAction} className="bg-white/10 text-white py-3 rounded-xl font-semibold text-sm border border-white/10 hover:bg-white/20 active:scale-95 transition-transform">
-              Withdraw
-            </button>
-          </div>
-        </div>
+  <button 
+    onClick={handleProtectedAction} 
+    className={`
+      ${isBlue 
+        ? 'bg-gradient-to-br from-sky-400 to-blue-600 shadow-sky-900/40' 
+        : 'bg-gradient-to-br from-stream-green to-emerald-600 shadow-emerald-900/40'
+      } 
+      text-white py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-wider 
+      shadow-lg hover:brightness-110 active:scale-[0.96] transition-all duration-200 
+      border-t border-white/30 flex items-center justify-center gap-2
+    `}
+  >
+    {/* Clean, professional bolt icon */}
+    <svg 
+      className="w-4 h-4" 
+      fill="currentColor" 
+      viewBox="0 0 24 24"
+    >
+      <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+    Activate
+  </button>
+
+  {/* Keeping your second button (Withdraw) for context */}
+  <button 
+    className="bg-[#242f41] text-gray-300 py-3.5 rounded-xl font-semibold text-[13px] border border-white/5 hover:bg-[#2d3a50] transition-colors"
+  >
+    Withdraw
+  </button>
+</div>
 
         {/* Earning Hub Grid */}
         <div>
