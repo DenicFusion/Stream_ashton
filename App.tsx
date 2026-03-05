@@ -16,7 +16,7 @@ import { Button } from './components/Button';
 const REDIRECT_CONFIG = {
   useWhatsApp: false, // Set to true to use WhatsApp, false for Telegram
   whatsAppNumber: "2349012345678", // Your WhatsApp number without '+'
-  telegramUrl: "https://t.me/official_vendor_md" // Your Telegram Channel/Group link
+  telegramUrl: "https://t.me/Stream_officiall" // Your Telegram Channel/Group link
 };
 
 const Loader: React.FC = () => (
