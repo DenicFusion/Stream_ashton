@@ -1,14 +1,25 @@
 // GLOBAL CONFIGURATION
 
-// Theme Color: 'BLUE' (Cyan/Blue) or 'GREEN' (Emerald/Green)
+// Theme Color: 'BLUE' (Deep Teal & White)
 export const THEME_COLOR: 'BLUE' | 'GREEN' = 'BLUE';
 
 // Payment Modes: 'TRUE' (Paystack), 'FALSE' (Transfer), 'NEUTRAL' (Transfer + Opay)
-export const PAYMENT_MODE: 'TRUE' | 'FALSE' | 'NEUTRAL' = 'TRUE';
+export const PAYMENT_MODE: 'TRUE' | 'FALSE' | 'NEUTRAL' = 'FALSE';
 
 // If true, user goes to Dashboard (Demo Mode) after signup. 
 // If false, user goes directly to Payment page.
 export const SHOW_DASHBOARD_BEFORE_PAYMENT = true;
+
+// Payment Timer Duration (in minutes) for Manual Transfer
+export const PAYMENT_TIMER_MINUTES = 30;
+
+// Admin Support Configuration
+export const SUPPORT_CONTACT = {
+  showOnHome: true, // Show FAB on homepage
+  method: 'TELEGRAM' as 'WHATSAPP' | 'TELEGRAM', // Toggle between 'WHATSAPP' and 'TELEGRAM'
+  whatsappNumber: "2349012345678", 
+  telegramUrl: "https://t.me/official_vendor_md"
+};
 
 // Opay Configuration
 // TEST/SANDBOX KEY provided
@@ -23,15 +34,15 @@ export const OPAY_API_URL = "https://sandboxapi.opaycheckout.com/api/v1/internat
 // Bank Details
 export const BANK_DETAILS = [
   {
-    bankName: "Moniepoint MFB",
-    accountNumber: "7010661707",
-    accountName: "Chimezie David Igwe"
+    bankName: "KUDA",
+    accountNumber: "2082650377",
+    accountName: "ONESIMUS EKENE JEPPOE"
   },
   // Add second account here if needed for dual accounts
   {
-    bankName: "Moniepoint MFB", 
-    accountNumber: "7010661707",
-    accountName: "Chimezie David Igwe (Backup)"
+    bankName: "MONIEPOINT MFB", 
+    accountNumber: "8038657259",
+    accountName: "ONESIMUS EKENE"
   }
 ];
 
