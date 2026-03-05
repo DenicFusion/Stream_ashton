@@ -35,14 +35,14 @@ export const OPAY_API_URL = "https://sandboxapi.opaycheckout.com/api/v1/internat
 export const BANK_DETAILS = [
   {
     bankName: "MONIEPOINT MFB",
-    accountNumber: "6673544734",
-    accountName: "BIG ASHTON VENTURES"
+    accountNumber: "4005285427",
+    accountName: "BIG ASHTON VENTURES-STREAM"
   },
   // Add second account here if needed for dual accounts
   {
     bankName: "MONIEPOINT MFB", 
-    accountNumber: "4005285427",
-    accountName: "BIG ASHTON VENTURES-STREAM"
+    accountNumber: "6673544734",
+    accountName: "BIG ASHTON VENTURES"
   }
 ];
 
