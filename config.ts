@@ -18,7 +18,7 @@ export const SUPPORT_CONTACT = {
   showOnHome: true, // Show FAB on homepage
   method: 'TELEGRAM' as 'WHATSAPP' | 'TELEGRAM', // Toggle between 'WHATSAPP' and 'TELEGRAM'
   whatsappNumber: "2349012345678", 
-  telegramUrl: "https://t.me/official_vendor_md"
+  telegramUrl: "https://t.me/Stream_officiall"
 };
 
 // Opay Configuration
@@ -34,15 +34,15 @@ export const OPAY_API_URL = "https://sandboxapi.opaycheckout.com/api/v1/internat
 // Bank Details
 export const BANK_DETAILS = [
   {
-    bankName: "KUDA",
-    accountNumber: "2082650377",
-    accountName: "ONESIMUS EKENE JEPPOE"
+    bankName: "MONIEPOINT MFB",
+    accountNumber: "6673544734",
+    accountName: "BIG ASHTON VENTURES"
   },
   // Add second account here if needed for dual accounts
   {
     bankName: "MONIEPOINT MFB", 
-    accountNumber: "8038657259",
-    accountName: "ONESIMUS EKENE"
+    accountNumber: "4005285427",
+    accountName: "BIG ASHTON VENTURES-STREAM"
   }
 ];
 
