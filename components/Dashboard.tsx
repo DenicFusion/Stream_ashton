@@ -155,7 +155,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
             
             <div className="relative z-10">
               <p className="text-white/80 text-sm font-bold tracking-wider mb-2">TOTAL STREAM INCOME</p>
-              <h2 className="text-4xl font-bold text-white tracking-tight">$12,000.00</h2>
+              <h2 className="text-4xl font-bold text-white tracking-tight">$12.00</h2>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
