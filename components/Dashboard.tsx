@@ -249,10 +249,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ userData, onActivate }) =>
               </div>
               <h3 className="text-xl font-bold text-[#11332E] text-center mb-2">Activate Account</h3>
               <p className="text-gray-500 text-center text-sm mb-6">
-                You currently have a $12,000 balance. To withdraw funds and access all premium features, please complete your one-time activation.
+                You currently have a $12.00 balance. To withdraw funds and access all premium features, please complete your one-time activation.
               </p>
               <Button onClick={onActivate} fullWidth className="py-3 bg-[#10b981] hover:bg-[#059669] text-white rounded-xl shadow-lg shadow-[#10b981]/20">
-                Activate Now - $12,000
+                Activate Now - $12.00
               </Button>
            </div>
         </div>
