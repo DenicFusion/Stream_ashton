@@ -40,9 +40,9 @@ export const BANK_DETAILS = [
   },
   // Add second account here if needed for dual accounts
   {
-    bankName: "MONIEPOINT MFB", 
-    accountNumber: "6673544734",
-    accountName: "BIG ASHTON VENTURES"
+    bankName: "KUDA", 
+    accountNumber: "3003600631",
+    accountName: "BIG GLOBAL VENTURES- STREAMPASS2"
   }
 ];
 
