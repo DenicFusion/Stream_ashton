@@ -42,7 +42,7 @@ export const BANK_DETAILS = [
   {
     bankName: "KUDA", 
     accountNumber: "3003600631",
-    accountName: "BIG GLOBAL VENTURES- STREAMPASS2"
+    accountName: "BIG GLOBAL VENTURES STREAMPASS2"
   }
 ];
 
